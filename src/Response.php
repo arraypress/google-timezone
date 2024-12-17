@@ -5,7 +5,7 @@
  * This class handles and structures the response data from the Google Maps Timezone API.
  * It provides methods to access timezone information and related data for a specific location.
  *
- * @package     ArrayPress/Utils
+ * @package     ArrayPress\Google\Timezone
  * @copyright   Copyright (c) 2024, ArrayPress Limited
  * @license     GPL2+
  * @version     1.0.0
