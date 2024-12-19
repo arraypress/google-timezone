@@ -18,7 +18,7 @@ A PHP library for integrating with the Google Maps Timezone API in WordPress. Th
 ## Requirements
 
 - PHP 7.4 or later
-- WordPress 5.0 or later
+- WordPress 6.7.1 or later
 - Google Maps API key with Timezone API enabled
 
 ## Installation
@@ -42,7 +42,7 @@ $result = $client->get_timezone( 37.4224764, -122.0842499 );
 if ( ! is_wp_error( $result ) ) {
     // Get timezone information
     echo "Timezone: {$result->get_timezone_id() }\n";
-    echo "Local Time: {$result->get_datetime()->format( 'Y-m-d H:i:s') }\n";
+    echo "Local Time: {$result->get_datetime()->format( 'Y-m-d H:i:s' ) }\n";
     echo "UTC Offset: {$result->get_formatted_offset() }\n";
 }
 ```
@@ -53,7 +53,7 @@ if ( ! is_wp_error( $result ) ) {
 
 ```php
 // Get timezone with specific timestamp
-$timestamp = strtotime( '2024-12-25 12:00:00');
+$timestamp = strtotime( '2024-12-25 12:00:00' );
 $result = $client->get_timezone(
     37.4224764,
     -122.0842499,
@@ -73,9 +73,9 @@ if ( ! is_wp_error( $result ) ) {
 
 ```php
 $result = $client->get_timezone( 37.4224764, -122.0842499 );
-if (!is_wp_error( $result)) {
+if ( ! is_wp_error( $result ) ) {
     // Check DST status
-    if ( $result->is_dst()) {
+    if ( $result->is_dst() ) {
         echo "Location is currently observing DST\n";
         echo "DST Offset: {$result->get_dst_offset() } seconds\n";
     }
@@ -107,7 +107,7 @@ if ( ! is_wp_error( $result ) ) {
 
 ```php
 // Initialize with custom cache duration (1 hour = 3600 seconds)
-$client = new Client( 'your-api-key', true, 3600);
+$client = new Client( 'your-api-key', true, 3600 );
 
 // Results will be cached
 $result = $client->get_timezone( 37.4224764, -122.0842499 );
@@ -123,8 +123,8 @@ $client->clear_cache();
 
 ### Client Methods
 
-* `get_timezone( $latitude, $longitude, $timestamp = null, $language = null)`: Get timezone information
-* `clear_cache( $identifier = null)`: Clear cached responses
+* `get_timezone( $latitude, $longitude, $timestamp = null, $language = null )`: Get timezone information
+* `clear_cache( $identifier = null )`: Clear cached responses
 
 ### Response Methods
 
