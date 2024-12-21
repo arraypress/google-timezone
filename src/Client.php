@@ -21,13 +21,7 @@ use WP_Error;
  * A comprehensive utility class for interacting with the Google Maps Timezone API.
  */
 class Client {
-
-	/**
-	 * API key for Google Maps
-	 *
-	 * @var string
-	 */
-	private string $api_key;
+	use Parameters;
 
 	/**
 	 * Base URL for the Timezone API
@@ -37,20 +31,6 @@ class Client {
 	private const API_ENDPOINT = 'https://maps.googleapis.com/maps/api/timezone/json';
 
 	/**
-	 * Whether to enable response caching
-	 *
-	 * @var bool
-	 */
-	private bool $enable_cache;
-
-	/**
-	 * Cache expiration time in seconds
-	 *
-	 * @var int
-	 */
-	private int $cache_expiration;
-
-	/**
 	 * Initialize the Timezone client
 	 *
 	 * @param string $api_key          API key for Google Maps
@@ -58,9 +38,9 @@ class Client {
 	 * @param int    $cache_expiration Cache expiration in seconds (default: 24 hours)
 	 */
 	public function __construct( string $api_key, bool $enable_cache = true, int $cache_expiration = 86400 ) {
-		$this->api_key          = $api_key;
-		$this->enable_cache     = $enable_cache;
-		$this->cache_expiration = $cache_expiration;
+		$this->set_api_key( $api_key );
+		$this->set_cache_enabled( $enable_cache );
+		$this->set_cache_expiration( $cache_expiration );
 	}
 
 	/**
@@ -96,7 +76,7 @@ class Client {
 		$params = [
 			'location'  => $latitude . ',' . $longitude,
 			'timestamp' => $timestamp,
-			'key'       => $this->api_key
+			'key'       => $this->get_api_key()
 		];
 
 		// Add optional language parameter
@@ -106,7 +86,7 @@ class Client {
 
 		// Generate cache key if caching is enabled
 		$cache_key = null;
-		if ( $this->enable_cache ) {
+		if ( $this->is_cache_enabled() ) {
 			$cache_key   = $this->get_cache_key( wp_json_encode( $params ) );
 			$cached_data = get_transient( $cache_key );
 			if ( false !== $cached_data ) {
@@ -121,8 +101,8 @@ class Client {
 		}
 
 		// Cache the response if caching is enabled
-		if ( $this->enable_cache && $cache_key ) {
-			set_transient( $cache_key, $response, $this->cache_expiration );
+		if ( $this->is_cache_enabled() && $cache_key ) {
+			set_transient( $cache_key, $response, $this->get_cache_expiration() );
 		}
 
 		return new Response( $response );
