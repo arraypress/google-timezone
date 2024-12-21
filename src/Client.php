@@ -13,6 +13,7 @@ declare( strict_types=1 );
 
 namespace ArrayPress\Google\Timezone;
 
+use ArrayPress\Google\Timezone\Traits\Parameters;
 use WP_Error;
 
 /**
@@ -37,7 +38,7 @@ class Client {
 	 * @param bool   $enable_cache     Whether to enable caching (default: true)
 	 * @param int    $cache_expiration Cache expiration in seconds (default: 24 hours)
 	 */
-	public function __construct( string $api_key, bool $enable_cache = true, int $cache_expiration = 86400 ) {
+	public function __construct( string $api_key, bool $enable_cache = true, int $cache_expiration = DAY_IN_SECONDS ) {
 		$this->set_api_key( $api_key );
 		$this->set_cache_enabled( $enable_cache );
 		$this->set_cache_expiration( $cache_expiration );

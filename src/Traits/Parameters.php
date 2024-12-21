@@ -1,8 +1,8 @@
 <?php
 /**
- * Google Geocoding API Parameters Trait
+ * Google Timezone API Parameters Trait
  *
- * @package     ArrayPress\Google\Geocoding
+ * @package     ArrayPress\Google\Timezone
  * @copyright   Copyright (c) 2024, ArrayPress Limited
  * @license     GPL2+
  * @version     1.0.0
@@ -11,7 +11,9 @@
 
 declare( strict_types=1 );
 
-namespace ArrayPress\Google\Timezone;
+namespace ArrayPress\Google\Timezone\Traits;
+
+use WP_Error;
 
 /**
  * Trait Parameters
@@ -36,7 +38,7 @@ trait Parameters {
 	 */
 	private array $cache_settings = [
 		'enabled'    => true,
-		'expiration' => 86400 // 24 hours
+		'expiration' => DAY_IN_SECONDS
 	];
 
 	/** API Key ******************************************************************/
@@ -92,9 +94,15 @@ trait Parameters {
 	 *
 	 * @param int $seconds Cache expiration time in seconds
 	 *
-	 * @return self
+	 * @return self|WP_Error
 	 */
-	public function set_cache_expiration( int $seconds ): self {
+	public function set_cache_expiration( int $seconds ) {
+		if ( $seconds < 0 ) {
+			return new WP_Error(
+				'invalid_expiration',
+				__( 'Cache expiration time cannot be negative', 'arraypress' )
+			);
+		}
 		$this->cache_settings['expiration'] = $seconds;
 
 		return $this;
